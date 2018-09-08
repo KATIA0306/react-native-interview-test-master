@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import { FlatList, View, ActivityIndicator, Text, Image} from 'react-native';
+import { FlatList, View, ActivityIndicator, Text, Image, StyleSheet, Dimensions} from 'react-native';
+import LikeButton from './LikeButton';
+const { width, height } = Dimensions.get('window');
+const cols = 3, rows = 3;
+
 
 export default class MoviesData extends Component {
   
@@ -21,7 +25,7 @@ export default class MoviesData extends Component {
           />
         );
       }
-
+      
     componentDidMount(){
       return fetch('https://us-central1-bonsai-interview-endpoints.cloudfunctions.net/movieTickets')
         .then((response) => response.json())
@@ -54,19 +58,21 @@ export default class MoviesData extends Component {
 
       return(
         <View style={{flex: 1, paddingTop:20}}>
-          <FlatList
+          <FlatList 
             data ={this.state.dataSource}
             ItemSeparatorComponent = {this.FlatListItemSeparator}
 
             renderItem={({item}) => 
-            <View style={{flex:1, flexDirection: 'row'}}>
+            <View style={styles.container}>
 
             <Image 
-            style= {{width: 200, height: 200}}
-            source = {{uri: 'https://dummyimage.com/1459x751.png/cc0000/ffffff'}} 
+            style={styles.image}
+            source = {{uri: item.image}} 
             key={item.uri}
             /> 
-            <Text>{item.title}, {item.genre}, {item.price}, {item.date} </Text>}
+            <Text>{item.title}, {item.genre}</Text>
+            
+            <Text>{item.price}, {item.date} </Text>}
             </View>
             }
             keyExtractor={item => item._id.$oid}
@@ -75,3 +81,23 @@ export default class MoviesData extends Component {
       );
     }
   }
+
+  const styles = StyleSheet.create({
+    container: {
+      marginLeft: 10,
+      marginBottom: 10,
+      height: (height - 20 - 20) / rows - 10,
+      width: (width - 10) / cols - 10,
+    },
+    image: {
+      borderRadius: 10,
+      width: 100,
+      height: 150,                  
+    },
+    title: {
+      
+    },
+    genre: {
+      
+    },
+  });
