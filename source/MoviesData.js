@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { FlatList, View, ActivityIndicator, Text, Image, StyleSheet, Dimensions} from 'react-native';
 import LikeButton from './LikeButton';
-const { width, height } = Dimensions.get('window');
-const cols = 3, rows = 3;
 
 
 export default class MoviesData extends Component {
@@ -10,22 +8,17 @@ export default class MoviesData extends Component {
     constructor(props){
       super(props);
       this.state ={ isLoading: true,
-                    dataSource: {} 
+                    dataSource: {},
+                    value: ''
                   };   
+      this._onStateChange = this._onStateChange.bind(this)
     }
 
-    FlatListItemSeparator = () => {
-        return (
-          <View
-            style={{
-              height: .5,
-              width: "100%",
-              backgroundColor: "#000",
-            }}
-          />
-        );
-      }
-      
+    _onStateChange(newState){
+      const value = newState?'You bookmarked this film':''
+      this.setState({toggleCount:value})
+    }
+
     componentDidMount(){
       return fetch('https://us-central1-bonsai-interview-endpoints.cloudfunctions.net/movieTickets')
         .then((response) => response.json())
@@ -36,8 +29,6 @@ export default class MoviesData extends Component {
             isLoading: false,
             dataSource: responseJson
           }, function(){
-            console.log ('katia')
-            console.log (responseJson)
           });
   
         })
@@ -56,23 +47,30 @@ export default class MoviesData extends Component {
       )
       } 
 
+      const {toggleCount} = this.state;
+
       return(
-        <View style={{flex: 1, paddingTop:20}}>
+        <View style={{paddingTop:20}}>
+        <Text> {toggleCount} </Text>
           <FlatList 
             data ={this.state.dataSource}
-            ItemSeparatorComponent = {this.FlatListItemSeparator}
 
             renderItem={({item}) => 
-            <View style={styles.container}>
+            <View >
 
+            <View style={styles.imageContainer}>
             <Image 
             style={styles.image}
             source = {{uri: item.image}} 
             key={item.uri}
             /> 
-            <Text>{item.title}, {item.genre}</Text>
+            </View>
             
-            <Text>{item.price}, {item.date} </Text>}
+            
+            <Text style = {styles.title} numberOfLines={1}>{item.title}</Text>
+            <Text style = {styles.title} numberOfLines={1}>{item.genre}</Text>
+            <LikeButton onStateChange = {this._onStateChange}/>
+           
             </View>
             }
             keyExtractor={item => item._id.$oid}
@@ -83,21 +81,24 @@ export default class MoviesData extends Component {
   }
 
   const styles = StyleSheet.create({
-    container: {
-      marginLeft: 10,
-      marginBottom: 10,
-      height: (height - 20 - 20) / rows - 10,
-      width: (width - 10) / cols - 10,
-    },
     image: {
+      marginLeft: 30,
+      marginBottom: 30,
       borderRadius: 10,
-      width: 100,
-      height: 150,                  
+      width: 150,
+      height: 200,                  
     },
     title: {
-      
+      marginLeft: 30,
+      marginTop: 5,
+      fontSize: 12,
     },
-    genre: {
-      
+    like: {
+      flexDirection: 'row',   
+      flexWrap: 'wrap',
     },
+    imageContainer: {
+      flex: 1,                         
+    },
+  
   });

@@ -8,7 +8,7 @@ export default class Main extends Component {
         <ScrollView> 
           <MoviesData />
         </ScrollView>
-      );
+      );  
     }
   }
   
