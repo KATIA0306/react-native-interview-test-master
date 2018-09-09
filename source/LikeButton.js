@@ -21,7 +21,7 @@ export default class LikeButton extends Component {
           <View style={{flexDirection:'row'}}>
             <TouchableOpacity 
               onPress = {()=>this.onPress()}
-              style = {{margin:10,height:40,borderRadius:10,flex:1,backgroundColor:buttonBg,justifyContent:'center',borderColor:'red',borderWidth:2}}>
+              style = {{margin:10,height:40,borderRadius:10,flex:1,backgroundColor:buttonBg,justifyContent:'center',borderColor:'red',borderWidth:1}}>
               <Text style = {{color:textColor,textAlign:'center',fontSize:16}}>Like!</Text>
             </TouchableOpacity> 
           </View>

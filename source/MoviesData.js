@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, View, ActivityIndicator, Text, Image, StyleSheet, Dimensions} from 'react-native';
+import { FlatList, View, ActivityIndicator, Text, Image, StyleSheet, } from 'react-native';
 import LikeButton from './LikeButton';
 
 
@@ -68,7 +68,7 @@ export default class MoviesData extends Component {
             
             
             <Text style = {styles.title} numberOfLines={1}>{item.title}</Text>
-            <Text style = {styles.title} numberOfLines={1}>{item.genre}</Text>
+            <Text style = {styles.genre} numberOfLines={1}>{item.genre}</Text>
             <LikeButton onStateChange = {this._onStateChange}/>
            
             </View>
@@ -91,14 +91,13 @@ export default class MoviesData extends Component {
     title: {
       marginLeft: 30,
       marginTop: 5,
+      fontSize: 14,
+    },
+    genre: {
+      marginLeft: 30,
+      marginTop: 5,
       fontSize: 12,
+      color:'grey', 
     },
-    like: {
-      flexDirection: 'row',   
-      flexWrap: 'wrap',
-    },
-    imageContainer: {
-      flex: 1,                         
-    },
-  
+    
   });
